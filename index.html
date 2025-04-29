@@ -2794,18 +2794,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 categoryName = 'Sobreconfianza';
                 behavior = "sobreestimar tus habilidades y conocimientos";
             } else if (category === 'sesgo_disponibilidad') {
-                categoryName = 'Sesgo de Anclaje';
+                categoryName = 'Sesgo de Disponibilidad';
                 behavior = "confiar en información que está más disponible en tu memoria";
             } else if (category === 'sesgo_patron') {
-                categoryName = 'Sesgo Falacia del Jugador';
+                categoryName = 'Sesgo de Reconocimiento de Patrones';
                 behavior = "ver patrones en datos aleatorios";
             } else if (category === 'sesgo_familiaridad') {
-                categoryName = 'Sesgo de Capacidad';
+                categoryName = 'Sesgo de Familiaridad';
                 behavior = "preferir lo conocido sobre lo desconocido";
+            } else if (category === 'sesgo_casa_dinero') {
+                categoryName = 'Efecto Casa de Dinero';
+                behavior = "tomar más riesgos después de ganancias previas";
             } else if (category === 'sesgo_aversion_perdida') {
                 categoryName = 'Aversión a la Pérdida';
                 behavior = "sentir más dolor por las pérdidas que placer por las ganancias equivalentes";
-            } else if (category === 'Aversión al Remordimiento') {
+            } else if (category === 'sesgo_disposicion') {
                 categoryName = 'Efecto Disposición';
                 behavior = "vender acciones ganadoras demasiado pronto y mantener perdedoras demasiado tiempo";
             } else if (category === 'sesgo_contabilidad_mental') {
@@ -2926,58 +2929,6 @@ document.addEventListener('DOMContentLoaded', function() {
         completeForm.scrollIntoView({ behavior: 'smooth' });
     });
 });
-// Prepare data for Google Sheets
-const formData = {
-  name: document.getElementById('userName').value,
-  email: document.getElementById('userEmail').value,
-  attentionLevel: categoriesEmocional.atencion.level,
-  attentionScore: categoriesEmocional.atencion.score,
-  clarityLevel: categoriesEmocional.claridad.level,
-  clarityScore: categoriesEmocional.claridad.score,
-  repairLevel: categoriesEmocional.reparacion.level,
-  repairScore: categoriesEmocional.reparacion.score,
-  riskProfile: perfilInversion,
-  riskScore: totalScoreInversion,
-  riskInterpretation: recomendacionesInversion,
-  representativenessMean: categoriesSesgos.sesgo_representatividad.mean.toFixed(2),
-  representativenessImpact: determinarImpacto(categoriesSesgos.sesgo_representatividad.mean),
-  overconfidenceMean: categoriesSesgos.sesgo_exceso_confianza.mean.toFixed(2),
-  overconfidenceImpact: determinarImpacto(categoriesSesgos.sesgo_exceso_confianza.mean),
-  anchoringMean: categoriesSesgos.sesgo_patron.mean.toFixed(2),
-  anchoringImpact: determinarImpacto(categoriesSesgos.sesgo_patron.mean),
-  gamblerFallacyMean: categoriesSesgos.sesgo_falacia_jugador?.mean.toFixed(2) || '0.00',
-  gamblerFallacyImpact: categoriesSesgos.sesgo_falacia_jugador ? determinarImpacto(categoriesSesgos.sesgo_falacia_jugador.mean) : 'Nulo',
-  capacityBiasMean: categoriesSesgos.sesgo_capacidad.mean.toFixed(2),
-  capacityBiasImpact: determinarImpacto(categoriesSesgos.sesgo_capacidad.mean),
-  lossAversionMean: categoriesSesgos.sesgo_aversion_perdida.mean.toFixed(2),
-  lossAversionImpact: determinarImpacto(categoriesSesgos.sesgo_aversion_perdida.mean),
-  regretAversionMean: categoriesSesgos.sesgo_aversion_remordimiento.mean.toFixed(2),
-  regretAversionImpact: determinarImpacto(categoriesSesgos.sesgo_aversion_remordimiento.mean),
-  mentalAccountingMean: categoriesSesgos.sesgo_contabilidad_mental.mean.toFixed(2),
-  mentalAccountingImpact: determinarImpacto(categoriesSesgos.sesgo_contabilidad_mental.mean),
-  herdEffectMean: categoriesSesgos.sesgo_manada.mean.toFixed(2),
-  herdEffectImpact: determinarImpacto(categoriesSesgos.sesgo_manada.mean)
-};
-
-// Send data to Google Apps Script
-try {
-  const response = await fetch('https://script.google.com/macros/s/AKfycbxeSdHylRHH3pwX-AVz7fg4wS1FhsZKMbHBACJQ4BBjzkRES_a1JOpbKh4DCLHjIOns/exec', {
-    method: 'POST',
-    body: JSON.stringify(formData),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  });
-  
-  const result = await response.json();
-  if (!result.success) {
-    console.error('Error saving to Google Sheets:', result.error);
-  }
-} catch (error) {
-  console.error('Error:', error);
-}
-
-
 </script>
 </body>
 </html>
